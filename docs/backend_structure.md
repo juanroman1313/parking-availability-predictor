@@ -24,7 +24,7 @@ tests/
   test_users.py
   test_reports.py
 main.py
-
+```
 ---
 
 ## Endpoint Mapping to Database Tables
@@ -57,4 +57,5 @@ main.py
   "probability": 0.75, 
   "total_reports": 12 
 }
+```
 - Note: Only this endpoint triggers the prediction service. All other endpoints (users, reports, zones) do not affect the prediction flow directly.
