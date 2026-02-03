@@ -2,6 +2,7 @@
 
 ## 1. Project Folder Structure
 
+```text
 app/
   models/
     user.py
@@ -18,11 +19,11 @@ app/
   services/
     prediction_service.py
   database.py
+  config.py
 tests/
   test_users.py
   test_reports.py
 main.py
-config.py
 
 ---
 
@@ -50,7 +51,7 @@ config.py
   2. Fetches probability and total_reports from ParkingAvailabilityStats
   3. If data is insufficient, returns "Insufficient data"
 - Output: 
-```json
+json
 { 
   "zone_id": 1, 
   "probability": 0.75, 
