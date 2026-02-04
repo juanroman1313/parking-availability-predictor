@@ -27,3 +27,9 @@ The goal of the system is to allow users to report parking availability in a giv
 **Description:** The user authenticates into the system.  
 **Result:** The system grants access to restricted features.
 
+## 📄 Documentation
+- [Project Overview](docs/project_overview.md)
+- [Backend Structure](docs/backend_structure.md)
+- [Database Design](docs/database_design.md)
+- [Prediction Algorithm](docs/prediction_algorithm.md)
+- [Frontend Structure](docs/frontend_structure.md)
