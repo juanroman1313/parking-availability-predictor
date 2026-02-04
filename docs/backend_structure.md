@@ -1,6 +1,6 @@
 # Backend Structure
 
-## 1. Project Folder Structure
+## Project Folder Structure
 
 ``` text
 app/
