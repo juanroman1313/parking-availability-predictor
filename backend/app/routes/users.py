@@ -36,3 +36,11 @@ def login_user(user:UserCreate):
         if not verify_password(user.password,existing_user.password_hash):
             raise HTTPException(status_code=400, detail="Incorrect password")
         return user
+    
+@router.get("/{id}")
+def read_user(id:int):
+    with SessionLocal() as session:
+        existing_user = session.query(User).filter(User.id == id).first()
+        if not existing_user:
+            raise HTTPException(status_code=400, detail="ID not found")
+        return existing_user
