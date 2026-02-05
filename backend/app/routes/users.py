@@ -3,7 +3,7 @@ from app.schemas.user_schema import UserCreate
 from app.models.user import User
 from app.base import SessionLocal
 from passlib.context import CryptContext
-from app.password_utils import get_password_hash
+from app.password_utils import get_password_hash, verify_password
 
 
 router = APIRouter(prefix="/users", tags=["Users"])
@@ -25,3 +25,14 @@ def register_user(user: UserCreate):
         session.commit()
         session.refresh(nuevo_usuario)
     return nuevo_usuario
+
+@router.post("/login")
+def login_user(user:UserCreate):
+    with SessionLocal() as session:
+        existing_user = session.query(User).filter(User.email == user.email).first()
+        print (existing_user)
+        if not existing_user:
+            raise HTTPException(status_code=400, detail="Email is not registered")
+        if not verify_password(user.password,existing_user.password_hash):
+            raise HTTPException(status_code=400, detail="Incorrect password")
+        return user
