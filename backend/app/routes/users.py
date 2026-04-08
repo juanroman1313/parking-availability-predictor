@@ -2,7 +2,6 @@ from fastapi import APIRouter, HTTPException, Depends
 from app.schemas.user_schema import UserCreate, UserResponse, Token
 from app.models.user import User
 from app.base import SessionLocal
-from passlib.context import CryptContext
 from app.password_utils import get_password_hash, verify_password
 from app.security import create_access_token, get_current_user
 
@@ -14,8 +13,6 @@ def register_user(user: UserCreate):
         existing_user = session.query(User).filter(User.email == user.email).first()
         if existing_user:
             raise HTTPException(status_code=400, detail="Email already registered")
-        
-        print("CONTRASEÑA: "+user.password)
         password_hash = get_password_hash(user.password)
         nuevo_usuario = User(
             email=user.email,
