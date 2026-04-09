@@ -1,13 +1,9 @@
-fastapi → framework
-
-uvicorn → servidor
-
-sqlalchemy → ORM
-
-psycopg2-binary → driver PostgreSQL
-
-python-dotenv → variables de entorno
-
-passlib[bcrypt] → passwords 
-
-python-jose → JWT 
+fastapi
+uvicorn
+sqlalchemy
+psycopg2-binary
+python-dotenv
+passlib[bcrypt]
+python-jose[cryptography]
+bcrypt
+pydantic[email]

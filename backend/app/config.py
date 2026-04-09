@@ -1,7 +1,8 @@
-import secrets
+import os
+from dotenv import load_dotenv
 
-SECRET_KEY = "7396653938d435b3aa3b381b28177e5d80ff9bc1e4beeeae43cbe2ebaf510f9e"
+load_dotenv()
 
+SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
-
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
