@@ -11,6 +11,6 @@ class ParkingAvailabilityStats(Base):
     time_slot = Column(DateTime, nullable=False)
     probability = Column(Float, nullable=False)
     total_reports = Column(Integer, default=0)
-    updated_at = Column(DateTime, default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.datetime.now(datetime.timezone.utc))
 
     zone = relationship("Zone", back_populates="availability_stats")

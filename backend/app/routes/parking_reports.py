@@ -2,25 +2,47 @@ from fastapi import APIRouter, HTTPException, Depends
 from app.base import SessionLocal
 from app.models.user import User
 from app.models.parking_report import ParkingReport
+from app.models.parking_availability_stats import ParkingAvailabilityStats
 from app.schemas.parking_report_schema import ParkingReportCreate, ParkingReportResponse
 from app.security import get_current_user
+from app.stats_utils import calculate_probability
+import datetime
 
 router = APIRouter(prefix="/reports", tags=["Reports"])
 
-@router.post("/createReport")
+@router.post("/createReport", response_model = ParkingReportResponse)
 def create_report(
     report: ParkingReportCreate, 
     current_user: User = Depends(get_current_user)
     ):
+    dtTrunct = report.time_slot.replace(second=0,minute=0)
     new_report = ParkingReport(
         user_id=current_user.id,
         zone_id=report.zone_id,
-        time_slot=report.time_slot,
+        time_slot=dtTrunct,
         availability=report.availability
     )
     with SessionLocal() as session:
         session.add(new_report)
         session.commit()
+        #Consultar si ya existe en stats una fila con zona y time slot
+        existing_stat = session.query(ParkingAvailabilityStats).filter(ParkingAvailabilityStats.zone_id == report.zone_id).filter(ParkingAvailabilityStats.time_slot == dtTrunct).first()
+        probability, reports = calculate_probability(session, report.zone_id, dtTrunct)
+        if (existing_stat == None):
+            new_parking_availability_stat = ParkingAvailabilityStats(
+                zone_id = report.zone_id,
+                time_slot = dtTrunct,
+                probability = probability ,
+                total_reports = reports
+            )
+            session.add(new_parking_availability_stat)
+            session.commit()
+            session.refresh(new_parking_availability_stat)
+        else:
+            existing_stat.probability = probability
+            existing_stat.total_reports = reports
+            existing_stat.updated_at = datetime.datetime.now(datetime.timezone.utc)
+            session.commit()  
         session.refresh(new_report)
     return new_report
 
